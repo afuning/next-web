@@ -1,0 +1,86 @@
+
+@color-blue: #3296fa;
+@color-red: #f5222d;
+.design_main {
+  display: flex;
+  .design_left {
+    width: 330px;
+    background-color: #FFF;
+  }
+  .design_center {
+    flex: 1;
+    min-width: 440px;
+    height: 100vh;
+    background-color: #F6F6F6;
+  }
+  .design__drag_screen {
+    margin: 0 auto;
+    width: 400px;
+    height: 600px;
+    background: url(https://img.alicdn.com/tfs/TB1vgDmBntYBeNjy1XdXXXXyVXa-980-1340.png) no-repeat;
+    background-position: top center;
+    background-size: cover;
+    overflow: hidden;
+  }
+  .design__drag_container {
+    width: 260px;
+    height: 430px;
+    margin: 0 auto;
+    margin-top: 66px;
+    overflow: auto;
+    &_empty {
+      height: calc(100% - 2px);
+      width: 100%;
+      background: #FFF url(https://img.alicdn.com/tfs/TB1tizSCrGYBuNjy0FoXXciBFXa-478-192.png) no-repeat;
+      background-position: center;
+      background-size: contain;
+    }
+  }
+  .design_right {
+    width: 330px;
+  }
+}
+.design_line_container {
+  height: 10px;
+}
+.design_line {
+  position: relative;
+  height: 2px;
+  top: 4px;
+  background-color: @color-red;
+  &::before {
+    content: ' ';
+    position: absolute;
+    left: 0;
+    top: -3px;
+    width: 0;
+    height: 0;
+    border-top: 4px solid transparent;
+    border-left: 8px solid @color-red;
+    border-bottom: 4px solid transparent;
+  }
+  &::after {
+    content: ' ';
+    position: absolute;
+    right: 0;
+    top: -3px;
+    width: 0;
+    height: 0;
+    border-top: 4px solid transparent;
+    border-right: 8px solid @color-red;
+    border-bottom: 4px solid transparent;
+  }
+}
+.design_button {
+  display: inline-block;
+  margin: 4px;
+  padding: 0 4px;
+  font-size: 12px;
+  width: 120px;
+  height: 32px;
+  line-height: 30px;
+  border: 1px solid #d9d9d9;
+  background-color: #FFF;
+  border-radius: 4px;
+  cursor: move;
+}
