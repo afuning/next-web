@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef, useImperativeHandle, forwardRef } from 'react'
 import CommonHead from '../../components/common-head'
 import Drag from '../../components/drag/'
 import Field from '../../components/design/Field'
@@ -6,8 +6,7 @@ import EditContainer from '../../components/design/EditContainer'
 import style from './style.less'
 import { DesignProvider, useDesign } from '../../components/design/useTreeReducer'
 // import { editInit, editReducer } from '../../components/design/useEditReducer'
-import { componentMap, getComponentInit } from '../../components/design/config'
-
+import { componentMap, getComponentInit, DRAG_TYPE } from '../../components/design/config'
 
 const Design = () => {
   return (
@@ -33,9 +32,13 @@ const DesignList = () => {
       {[...componentMap.keys()].map(componentId => {
         const {name} = getComponentInit(componentId)
         return (
-          <Drag.Item key={componentId} componentId={componentId} dragEndCb={dispatch}>
-            {({ dragProps }) => (
-              <div {...dragProps} className={style.design_button}>{name}</div>
+          <Drag.Item
+            dragtype={DRAG_TYPE}
+            key={componentId}
+            node={{componentId}}
+            dragEndCb={dispatch}>
+            {({ dragProps, dragRef }) => (
+              <DragInner dragtype={DRAG_TYPE} ref={dragRef} dragProps={dragProps} name={name} />
             )}
           </Drag.Item>
         )
@@ -44,13 +47,27 @@ const DesignList = () => {
   )
 }
 
+const DragInner = forwardRef(({ dragProps, name }, parentRef) => {
+  const dragRef = useRef()
+  useImperativeHandle(parentRef, () => ({
+    getDom: () => {
+      return dragRef.current
+    }
+  }))
+  return (
+    <div ref={dragRef} {...dragProps} className={style.design_button}>
+      {name}
+    </div>
+  )
+})
+
 // 可放入组件
 const DesignContainer = () => {
   const [state, dispatch] = useDesign()
   const { tree, current, preNodeId } = state
   return (
     <div className={style.design_center}>
-      <Drag.Container dropCb={dispatch}>
+      <Drag.Container dragtype={DRAG_TYPE} dropCb={dispatch}>
         {({ dropProps }) => (
           <div className={style.design__drag_screen}>
             <div { ...dropProps } className={style.design__drag_container}>

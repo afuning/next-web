@@ -1,3 +1,6 @@
+@color-border: #aaa;
+@color-blue: #3296fa;;
+@border-radius: 4px;
 .label {
   font-size: 14px;
   padding: 12px 0;
@@ -10,6 +13,51 @@
   height: 32px;
   width: 100%;
   line-height: 32px;
-  border-radius: 4px;
+  border-radius: @border-radius;
   padding: 0 8px;
+}
+
+// Options
+.option_outer {
+  display: flex;
+  & + .option_outer {
+    margin-top: 6px;
+  }
+  .option_container {
+    flex: 1;
+    position: relative;
+    padding-left: 30px;
+    border: 1px solid @color-border;
+    border-radius: @border-radius;
+    cursor: grab;
+    .option_drag {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 30px;
+      text-align: center;
+      &_icon {
+        position: relative;
+        font-size: 20px;
+        top: 5px;
+      }
+    }
+    .input_line {
+      border: none;
+      background-color: transparent;
+    }
+  }
+  .option_action {
+    width: 120px;
+    line-height: 34px;
+    &_icon {
+      font-size: 24px;
+      margin-left: 6px;
+      cursor: pointer;
+      &:hover {
+        color: @color-blue;
+      }
+    }
+  }
 }

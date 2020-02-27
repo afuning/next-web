@@ -1,12 +1,14 @@
 import Edit from './EditClass'
 import {
   Label,
-  Placeholder
+  Placeholder,
+  Options
 } from './packages/'
 
+export const DRAG_TYPE = 'DRAG_TYPE'
 export const componentMap = new Map()
 componentMap.set(1, { name: '单行输入框', label: '单行输入框', placeholder: '请输入' })
-componentMap.set(2, { name: '单选框', label: '单选框', placeholder: '请输入' })
+componentMap.set(2, { name: '单选框', label: '单选框', placeholder: '请输入', options: [{ label: '选项1'}, { label: '选项2'}] })
 
 // 获取对应componentId的编辑项
 export const getComponentInit = (componentId) => {
@@ -22,6 +24,7 @@ export const createEdit = (nodeId, componentId) => {
 export const formItemMap = new Map()
 formItemMap.set('label', Label)
 formItemMap.set('placeholder', Placeholder)
+formItemMap.set('options', Options)
 
 // 编辑组件块
 export const EditComponent = (key, value, editer) => {
