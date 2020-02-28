@@ -15,8 +15,8 @@ const Field = ({ node, isEdit }) => {
     <Drag.Item
       dragtype={DRAG_TYPE}
       node={{componentId: params.componentId, id}}
-      dropEnterCb={dispatch}
-      dropLeaveCb={dispatch}
+      dragEnterCb={dispatch}
+      dragLeaveCb={dispatch}
       dragEndCb={dispatch}
     >
       {({ dragProps, dragOverProps, dragRef }) => (

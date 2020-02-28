@@ -16,8 +16,8 @@ const Item = (props) => {
   const { dragOverProps } = useDragOver({
     dragtype: props.dragtype,
     node: { ...props.node },
-    dropEnterCb: props.dropEnterCb,
-    dropLeaveCb: props.dropLeaveCb
+    dragEnterCb: props.dragEnterCb,
+    dragLeaveCb: props.dragLeaveCb
   })
 
   return (
