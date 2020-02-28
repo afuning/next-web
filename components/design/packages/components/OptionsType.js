@@ -1,9 +1,13 @@
-import React, { useReducer, useRef, useImperativeHandle, forwardRef } from 'react'
+import React, { useReducer, useEffect, useRef, useImperativeHandle, forwardRef, useCallback } from 'react'
 import Drag from '../../../drag/'
 import style from '../style.less'
-import { arrayUtil } from '../utils'
+import { arrayUtil, debounce } from '../utils'
 const DRAG_TYPE = 'OPTIONS'
 
+/**
+ * 数据初始化
+ * @param {Array} value 
+ */
 const initState = (value) => {
   value = value.map((item, index) => ({id: Date.now() + index, ...item}))
   return (
@@ -13,42 +17,42 @@ const initState = (value) => {
     }
   )
 }
+/**
+ * 
+ * @param {*} state 
+ * @param {Object} action { type: '', node: {id: XXX} }
+ */
 const reducer = (state, action) => {
   console.log(action)
   switch(action.type) {
     case 'insert':
-      if (state.preNodeId) {
+      if (state.preNodeId && state.preNodeId !== action.node.id) {
         // 删除当前项
         arrayUtil.delete('id', action.node.id, state.options)
         // 将node插入
         let index = arrayUtil.findIndex('id', state.preNodeId, state.options)
         if (index !== -1) {
-          action.node.index = index + 1
           state.options.splice(index + 1, 0, action.node)
         }
       }
       return {
+        ...state,
         options: [...state.options]
       }
     case 'add':
       if (state.preNodeId) {
-        // 将node插入
-        let index = -1
-        state.options.some((o, i) => {
-          if (o.id === state.preNodeId) {
-            index = i
-            return true
-          }
-        })
+        let index = arrayUtil.findIndex('id', state.preNodeId, state.options)
         if (index !== -1) {
           state.options.splice(index + 1, 0, action.node)
         }
       }
       return {
+        ...state,
         options: [...state.options]
       }
     case 'delete':
       return {
+        ...state,
         options: state.options.filter(o => o.id !== action.node.id)
       }
     // 放置的位置
@@ -66,11 +70,19 @@ const reducer = (state, action) => {
           preNodeId: ''
         }
       return state
+    case 'edit':
+      let index = arrayUtil.findIndex('id', action.node.id, state.options)
+      if (index !== -1)
+        state.options.splice(index, 1, action.node)
+      return {
+        ...state,
+        options: state.options
+      }
     default:
       return state
   }
 }
-const OptionsType = ({ value, label, tip }) => {
+const OptionsType = ({ value, label, tip, onChange }) => {
   const [state, dispatch] = useReducer(reducer, value, initState)
   const { options } = state
   
@@ -78,12 +90,23 @@ const OptionsType = ({ value, label, tip }) => {
     const newNode = { id: Date.now(), label: `选项${options.length + 1}` }
     dispatch({type: 'enter', node: {id: preNodeId}})
     dispatch({type: 'add', node: newNode})
+    onChange(options)
   }
 
   const handleDelete = (preNodeId) => {
     if (options.length === 1) return
     dispatch({type: 'delete', node: {id: preNodeId}})
+    onChange(options)
   }
+
+  const handleChangeText = (id, value) => {
+    dispatch({type: 'edit', node: {id, label: value}})
+    onChange(options)
+  }
+
+  useEffect(() => {
+    console.log(111)
+  })
   return (
     <React.Fragment>
       <div className={style.label}>{label}<span className={style.tip}>&nbsp;{tip}</span></div>
@@ -113,6 +136,7 @@ const OptionsType = ({ value, label, tip }) => {
                         dragOverProps={dragOverProps}
                         handleDelete={handleDelete}
                         handleInsert={handleInsert}
+                        handleChangeText={handleChangeText}
                       ></OptionItem>
                     )
                   }
@@ -126,8 +150,14 @@ const OptionsType = ({ value, label, tip }) => {
   )
 }
 
-const OptionItem = forwardRef(({ node, dragProps, dragOverProps, handleInsert, handleDelete }, parentRef) => {
+const OptionItem = React.memo(forwardRef(({ node, dragProps, dragOverProps, handleInsert, handleDelete, handleChangeText }, parentRef) => {
   const dragRef = useRef()
+  const inputEl = useRef(null)
+
+  const onInput = debounce(()=> {
+    handleChangeText(node.id, inputEl.current.value)
+  }, 800)
+
   useImperativeHandle(parentRef, () => ({
     getDom: () => {
       return dragRef.current
@@ -139,17 +169,24 @@ const OptionItem = forwardRef(({ node, dragProps, dragOverProps, handleInsert, h
       <div className={style.option_container}>
         <div {...dragProps} className={style.option_drag}><i className={`${style.option_drag_icon} iconfont iconsort`}></i></div>
         <input
+          ref={inputEl}
           defaultValue={node.label}
+          onChange={onInput}
           className={style.input_line}
           type="text"
         />
       </div>
       <div className={style.option_action}>
-        <i onClick={() => handleDelete(node.id)} className={`${style.option_action_icon} iconfont iconjian`}></i>
-        <i onClick={() => handleInsert(node.id)} className={`${style.option_action_icon} iconfont iconjia`}></i>
+        <i onClick={useCallback(() => handleDelete(node.id), [])} className={`${style.option_action_icon} iconfont iconjian`}></i>
+        <i onClick={useCallback(() => handleInsert(node.id), [])} className={`${style.option_action_icon} iconfont iconjia`}></i>
       </div>
     </div>
   )
+}), (prevProps, nextProps) => {
+  if (prevProps.node.id !== nextProps.node.id) {
+    return false
+  }
+  return true
 })
 
-export default OptionsType
+export default React.memo(OptionsType, () => { return true })

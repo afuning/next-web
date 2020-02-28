@@ -1,3 +1,4 @@
+import React from 'react'
 import Edit from './EditClass'
 import {
   Label,
@@ -32,5 +33,6 @@ export const EditComponent = (key, value, editer) => {
     let Component = formItemMap.get(key)
     return <Component key={`${editer.nodeId}-${key}`} valueKey={key} value={value} editer={editer} />
   }
-  return ''
+  return ""
 }
+

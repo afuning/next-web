@@ -3,14 +3,21 @@
 @color-red: #f5222d;
 .design_main {
   display: flex;
+  flex-wrap: wrap;
+  height: 100vh;
+  .design_header {
+    height: 50px;
+    width: 100%;
+    background-color: @color-blue;
+  }
   .design_left {
     width: 330px;
     background-color: #FFF;
   }
   .design_center {
+    height: calc(100% - 50px);
     flex: 1;
     min-width: 440px;
-    height: 100vh;
     background-color: #F6F6F6;
   }
   .design__drag_screen {

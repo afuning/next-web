@@ -14,12 +14,24 @@ const Design = () => {
       <CommonHead title="组件组装" />
 
       <main className={style.design_main}>
+
         <DesignProvider>
+          <DesignHeader />
           <DesignList />
           <DesignContainer/>
           <DesignEdit />
         </DesignProvider>
       </main>
+    </div>
+  )
+}
+
+// 设计头部
+const DesignHeader = () => {
+  const [state] = useDesign()
+  return (
+    <div className={style.design_header}>
+      <button>查看当前数据</button>
     </div>
   )
 }
