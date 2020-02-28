@@ -65,14 +65,18 @@ const CommonHead = ({ title }) => (
         outline-color: transparent ;
         box-shadow: none;
       }
-      [draggable] {
-        -moz-user-select: none;
-        -khtml-user-select: none;
-        -webkit-user-select: none;
-        user-select: none;
-        /* Required to make elements draggable in old WebKit */
-        -khtml-user-drag: element;
-        -webkit-user-drag: element;
+      button:-moz-focusring,
+      [type="button"]:-moz-focusring,
+      [type="reset"]:-moz-focusring,
+      [type="submit"]:-moz-focusring {
+        outline: 1px dotted ButtonText;
+      }
+      button,
+      html [type="button"], /* 1 */
+      [type="reset"],
+      [type="submit"] {
+        -webkit-appearance: button; /* 2 */
+        outline:none;
       }
     `}</style>
   </div>
