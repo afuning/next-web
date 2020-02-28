@@ -4,6 +4,12 @@ node_js:
 services:
   - docker
 
+cache:
+  directories:
+    - $HOME/.cache/npm
+    - node_modules
+    - .next/cache
+
 before_install:
   - npm install
 
