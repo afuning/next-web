@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "build:static": "next build & next export"
+    "build:static": "next build && next export"
   },
   "dependencies": {
     "@zeit/next-less": "^1.0.1",
