@@ -90,23 +90,24 @@ const OptionsType = ({ value, label, tip, onChange }) => {
     const newNode = { id: Date.now(), label: `选项${options.length + 1}` }
     dispatch({type: 'enter', node: {id: preNodeId}})
     dispatch({type: 'add', node: newNode})
-    onChange(options)
   }
 
-  const handleDelete = (preNodeId) => {
+  const handleDelete = (id) => {
+    console.log(state.options)
     if (options.length === 1) return
-    dispatch({type: 'delete', node: {id: preNodeId}})
-    onChange(options)
+    dispatch({type: 'delete', node: {id}})
   }
 
   const handleChangeText = (id, value) => {
     dispatch({type: 'edit', node: {id, label: value}})
-    onChange(options)
   }
 
   useEffect(() => {
     console.log(111)
   })
+  useEffect(() => {
+    onChange(options)
+  }, [options])
   return (
     <React.Fragment>
       <div className={style.label}>{label}<span className={style.tip}>&nbsp;{tip}</span></div>
