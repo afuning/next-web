@@ -40,6 +40,29 @@ class Node {
     })
     return index
   }
+  toString(join = true) {
+    let parts = [ JSON.stringify({ id: this.id, params: this.params }) ]
+
+    if (this.children.length > 0) {
+      parts = parts.concat(this.children
+        .map(function(node) {
+          return node.toString(false)
+        })
+        .reduce(function(left, right) {
+          return left.concat(right)
+        })
+        .map(function(line) {
+          return '  ' + line
+        })
+      )
+    }
+
+    if (join) {
+      return parts.join('<br /><br />').replace(/(\,)/ig, '$1<br />')
+    } else {
+      return parts
+    }
+  }
 }
 
 export default Node

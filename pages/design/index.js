@@ -1,6 +1,6 @@
 import React, { useRef, useImperativeHandle, forwardRef } from 'react'
+import { Modal, Button } from 'antd'
 import CommonHead from '../../components/common-head'
-import CommonButton from '../../components/common-button'
 import Drag from '../../components/drag/'
 import Field from '../../components/design/Field'
 import EditContainer from '../../components/design/EditContainer'
@@ -30,10 +30,22 @@ const Design = () => {
 // 设计头部
 const DesignHeader = () => {
   const [state] = useDesign()
+
+  const handleShowTree = () => {
+    Modal.info({
+      title: '当前数据',
+      width: 800,
+      content: (
+        <div dangerouslySetInnerHTML={{__html: state.tree.root.toString()}}>
+        </div>
+      ),
+      onOk() {},
+    })
+  }
   return (
     <div className={style.design_header}>
-      <CommonButton onClick={() => { console.log(state.tree) }}>查看当前数据</CommonButton>
-      <CommonButton type="primary" onClick={() => { console.log(state.tree) }}>保存并预览</CommonButton>
+      <Button onClick={handleShowTree}>查看当前数据</Button>
+      <Button danger type="primary" onClick={() => { console.log(state.tree) }}>保存并预览</Button>
     </div>
   )
 }
