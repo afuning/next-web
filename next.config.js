@@ -3,8 +3,8 @@ const withLess = require('@zeit/next-less')
 const withPlugins = require('next-compose-plugins')
 const md5= require('md5')
 module.exports = withPlugins([withLess], {
-  lessLoaderOptions : {//如果是antd就需要，antd-mobile不需要
-    javascriptEnabled : true
+  lessLoaderOptions : {
+    javascriptEnabled : true //如果是antd就需要，antd-mobile不需要
   },
   cssModules: true,
   cssLoaderOptions: {
