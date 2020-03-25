@@ -1,8 +1,12 @@
 const path = require('path')
 const withLess = require('@zeit/next-less')
+const withPWA = require('next-pwa')
 const withPlugins = require('next-compose-plugins')
 const md5= require('md5')
-module.exports = withPlugins([withLess], {
+module.exports = withPlugins([withLess, withPWA], {
+  pwa: {
+    dest: 'public'
+  },
   lessLoaderOptions : {
     javascriptEnabled : true //如果是antd就需要，antd-mobile不需要
   },
