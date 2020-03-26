@@ -1,11 +1,14 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button, notification } from 'antd'
 let appPromptEvent = null
+let count = 0
 const App = ({ Component, pageProps }) => {
   useEffect(() => {
     window.addEventListener('beforeinstallprompt', function beforeInstallprompt (event) {
       console.log('触发事件：beforeinstallprompt');
       appPromptEvent = event
+      if (count !== 0) return false
+      count++
       pwaNotification()
       event.preventDefault();
       return false;
@@ -22,7 +25,7 @@ const App = ({ Component, pageProps }) => {
 }
 
 const pwaNotification = () => {
-  const key = `open${Date.now()}`;
+  const key = `open${Date.now()}`
   const openAppPrompt = () => {
     if (appPromptEvent !== null) {
       appPromptEvent.prompt();
@@ -39,9 +42,9 @@ const pwaNotification = () => {
   }
   const btn = (
     <Button type="primary" size="small" onClick={openAppPrompt}>
-      安装应用
+      造作呀
     </Button>
-  );
+  )
   notification.open({
     message: '安装应用',
     duration: null,
