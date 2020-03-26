@@ -18,3 +18,8 @@ script:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker build -t afuning/next-web:latest .
   - docker push afuning/next-web:latest
+
+notifications:
+  email:
+    recipients:
+      - afncn@icloud.com
