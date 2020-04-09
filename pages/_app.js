@@ -4,7 +4,7 @@ let appPromptEvent = null
 let count = 0
 const App = ({ Component, pageProps }) => {
   useEffect(() => {
-    window.addEventListener('beforeinstallprompt', function beforeInstallprompt (event) {
+    const beforeInstallprompt = () => {
       console.log('触发事件：beforeinstallprompt');
       appPromptEvent = event
       if (count !== 0) return false
@@ -12,7 +12,8 @@ const App = ({ Component, pageProps }) => {
       pwaNotification()
       event.preventDefault();
       return false;
-    })
+    }
+    window.addEventListener('beforeinstallprompt', beforeInstallprompt)
     return function cleanup() {
       window.removeEventListener(beforeInstallprompt)
     }
