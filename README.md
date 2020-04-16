@@ -11,3 +11,18 @@ travis自动部署生成docker镜像
 ```
 npm run dev
 ```
+
+# 项目功能
+
+## 非业务功能
+
+[x]上SSL  
+[x]上H2  
+[x]上Docker  
+[x]上antd-design  
+[x]上PWA  
+
+## 业务功能
+
+[x]表单拖拽  
+[ ]图操作
